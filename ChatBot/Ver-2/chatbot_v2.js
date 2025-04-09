@@ -13,4 +13,4 @@ client.on('ready', () => {
 // E inicializa tudo 
 client.initialize();
 
-const delay = ms => new Promise(res => setTimeout(res, ms)); // Função que usamos para criar o delay entre uma ação e outra
+const delay = ms => new Promise(res => setTimeout(res, ms)); // Função que usamos para criar o delay entre uma ação e outra 
