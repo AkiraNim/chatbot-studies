@@ -1,16 +1,30 @@
-// leitor de qr code
+const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
-const { Client, Buttons, List, MessageMedia } = require('whatsapp-web.js'); // Mudança Buttons
-const client = new Client();
-// serviço de leitura do qr code
-client.on('qr', qr => {
-    qrcode.generate(qr, {small: true});
-});
-// apos isso ele diz que foi tudo certo
-client.on('ready', () => {
-    console.log('Tudo certo! WhatsApp conectado.');
-});
-// E inicializa tudo 
-client.initialize();
 
-const delay = ms => new Promise(res => setTimeout(res, ms)); // Função que usamos para criar o delay entre uma ação e outra 
+const client = new Client({
+    authStrategy: new LocalAuth()
+});
+
+client.on('qr', qr => {
+    qrcode.generate(qr, { small: true });
+});
+
+client.on('ready', () => {
+    console.log('Bot conectado com sucesso!');
+});
+
+client.on('message', async msg => {
+    if (msg.body === '!menu') {
+        await msg.reply('Escolha uma opção:\n1 - Ver horário\n2 - Falar com atendente');
+    }
+
+    if (msg.body === '1') {
+        await msg.reply('Estamos abertos das 8h às 18h.');
+    }
+
+    if (msg.body === '2') {
+        await msg.reply('Aguarde um momento, um atendente irá te chamar.');
+    }
+});
+
+client.initialize();
