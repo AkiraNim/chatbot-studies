@@ -31,14 +31,14 @@ client.on('ready', async () => {
     console.log('Usando imagem:', caminhoImagem);
 
     const media = MessageMedia.fromFilePath(caminhoImagem);
-    const mensagem = 'Olá! Esta é uma mensagem automática com uma imagem!';
+    const mensagem = `👋 Olá!`;
+
+    const ultNumero = contatos[contatos.length - 1];
 
     for (const numero of contatos) {
         if (!enviados.includes(numero)) {
             try {
-                // Envia a mensagem primeiro
                 await client.sendMessage(numero + '@c.us', mensagem);
-                // Depois envia a imagem
                 await client.sendMessage(numero + '@c.us', media);
 
                 console.log(`✅ Mensagem enviada para ${numero}`);
@@ -46,8 +46,7 @@ client.on('ready', async () => {
                 enviados.push(numero);
                 fs.writeFileSync(caminhoEnviados, JSON.stringify(enviados, null, 2));
 
-                // Aguarda 5 minutos antes do próximo envio
-                await new Promise(resolve => setTimeout(resolve, 300000));
+                await new Promise(resolve => setTimeout(resolve, 100));
             } catch (error) {
                 console.error(`❌ Erro ao enviar para ${numero}:`, error.message);
             }
@@ -56,7 +55,14 @@ client.on('ready', async () => {
         }
     }
 
+    // Verifica se o último número foi enviado, aguarda 20 segundos, desloga e finaliza
+    if (enviados.includes(ultNumero)) {
+        console.log('⏳ Aguardando 120 segundos antes de encerrar...');
+        await new Promise(resolve => setTimeout(resolve, 120000));
+    }
+
     console.log('📨 Envio finalizado!');
+    await client.logout();
     process.exit(0);
 });
 
