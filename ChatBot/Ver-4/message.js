@@ -1,0 +1,1 @@
+module.exports = "👋 Olá! Esta é uma mensagem automatica do bot v4. Digite OK";
